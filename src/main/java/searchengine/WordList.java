@@ -7,7 +7,6 @@ public class WordList {
     public WordList() {    }
 
     public void append(WordListNode node) {
-        // TODO this should be alphabetic
         if (root == null) {
             root = node;
         } else {
@@ -15,7 +14,7 @@ public class WordList {
         }
     }
     private void insert(WordListNode node) {
-        WordListNode current = root;
+        var current = root;
         int wordComparison;
         while (current != null) {
             wordComparison = node.getWord().compareTo(current.getWord());
@@ -24,7 +23,7 @@ public class WordList {
                 if (current.next != null) {
                     if (node.getWord().compareTo(current.next.getWord()) < 0) {
                         // found the place
-                        WordListNode hold = current.next;
+                        var hold = current.next;
                         current.next = node;
                         node.next = hold;
                         return;
@@ -44,7 +43,7 @@ public class WordList {
     }
 
     public void printList() {
-        WordListNode current = root;
+        var current = root;
         System.out.print("head->");
         while (current != null) {
             System.out.printf("%s->", current.getWord());
@@ -55,9 +54,9 @@ public class WordList {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
+        var sb = new StringBuilder();
         sb.append("head->");
-        WordListNode current = root;
+        var current = root;
         while (current != null) {
             sb.append(current.getWord());
             sb.append("->");

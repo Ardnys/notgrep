@@ -7,11 +7,12 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class SearchEngine {
-    public static void readInputFile(String path) {
-        File file = new File(path);
-        try (BufferedReader bf = Files.newBufferedReader(Paths.get(path))) {
+    public SearchEngine() {}
+    public void readInputFile(String path) {
+        var file = new File(path);
+        try (var bf = Files.newBufferedReader(Paths.get(path))) {
             String line;
-            StringBuilder allFiles = new StringBuilder();
+            var allFiles = new StringBuilder();
             while ((line = bf.readLine()) != null) {
                 if (!line.equals("####")) {
                     // regex matches all non-alpha characters except whitespaces
@@ -19,18 +20,12 @@ public class SearchEngine {
                 }
                 allFiles.append(line);
             }
-//            System.out.println(allFiles);
-            FileScanner scanner = new FileScanner(allFiles.toString());
-            WordList wordList = scanner.scanFile();
+            var scanner = new FileScanner(allFiles.toString());
+            var wordList = scanner.scanFile();
         }
         catch (IOException e) {
             e.printStackTrace();
             System.err.println("Error while reading the input file");
         }
-
-    }
-
-    public static void main(String[] args) {
-        SearchEngine.readInputFile("smolfilesystem.txt");
     }
 }

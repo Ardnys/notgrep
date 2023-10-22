@@ -22,7 +22,6 @@ public class FileScanner {
             start = current;
             scan();
         }
-        words.printList();
         return words;
     }
 
@@ -56,7 +55,7 @@ public class FileScanner {
     private void word() {
         while (Character.isAlphabetic(peek())) advance();
 
-        String word = contents
+        var word = contents
                 .substring(start, current)
                 .toLowerCase();
 //        System.out.println("word: " + word);
@@ -64,13 +63,11 @@ public class FileScanner {
     }
     private void separator() {
         switch (mode) {
-            case TITLE: {
+            case TITLE -> {
                 mode = BODY;
-                break;
             }
-            case BODY: {
+            case BODY -> {
                 mode = TITLE;
-                break;
             }
         }
         while (isBang(peek())) advance();
