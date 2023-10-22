@@ -1,5 +1,6 @@
 package searchengine;
 
+import java.io.File;
 import java.util.Optional;
 
 public class NotGrep {
@@ -37,10 +38,29 @@ public class NotGrep {
             System.exit(64);
         } else if (args.length == 2) {
             var dsFlag = args[0];
+            var pathOfFile = args[1];
+
+            // types make it a bit clear here
             Flag flag = checkFlag(dsFlag);
-            // TODO check flag
-            var cmdFile = args[1];
-            // TODO can I check if the file exists?
+            Optional<File> fileOrNot = checkFile(pathOfFile);
+
+            fileOrNot.ifPresentOrElse(
+                    NotGrep::parseCommandFile,
+                    () -> {
+                        System.err.println("Invalid command file path.");
+                        System.exit(1);
+                    });
+
+            /* ====== Author Note ======
+            Here I used both Optional<T> type and lambda expressions. I know how they work (kind of)
+            and IntelliJ assists me with hints and tricks when I do something wrong.
+
+            I can very well use null instead of Optional<T> but many languages have features for these.
+            Some languages don't even have null. I used Java libraries that fully incorporated Optional<T>.
+
+            Often it's shorter to unwrap the Optional<T> and shorter than if checks. Good lambda practice as well.
+             */
+
         } else if (args.length == 1) {
             var flagOrFile = args[0];
             // TODO check this one too somehow
@@ -53,7 +73,8 @@ public class NotGrep {
     }
 
     private static Flag checkFlag(String flag) {
-        // flag could be valid or invalid. return an optional to handle both of the cases
+        // TODO Strategy Pattern to change data structures.
+        // TODO operate on flags instead of returning it
         return switch (flag) {
             case "-bst" -> Flag.BST;
             case "-ll" -> Flag.LL;
@@ -62,5 +83,17 @@ public class NotGrep {
             default -> Flag.UNDEF;
         };
 
+    }
+    private static Optional<File> checkFile(String path) {
+        var file = new File(path);
+        if (file.exists() && file.isFile()) {
+            return Optional.of(file);
+        } else {
+            return Optional.empty();
+        }
+    }
+    private static void parseCommandFile(File file) {
+        // TODO parse the command text file
+        System.out.println("Oops, can't parse the file rn");
     }
 }
