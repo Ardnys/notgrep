@@ -28,4 +28,8 @@ public class WordListNode {
                 ", documents=" + Arrays.toString(documents.toArray()) +
                 '}';
     }
+
+    public String getWord() {
+        return word;
+    }
 }

@@ -19,7 +19,7 @@ public class SearchEngine {
                 }
                 allFiles.append(line);
             }
-            System.out.println(allFiles);
+//            System.out.println(allFiles);
             FileScanner scanner = new FileScanner(allFiles.toString());
             WordList wordList = scanner.scanFile();
         }

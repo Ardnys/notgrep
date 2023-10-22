@@ -22,6 +22,7 @@ public class FileScanner {
             start = current;
             scan();
         }
+        words.printList();
         return words;
     }
 
@@ -30,7 +31,6 @@ public class FileScanner {
 
 
         if (mode == TITLE) {
-            // TODO a title is scanned until the separator is encountered
             if (Character.isAlphabetic(c)) {
                 title();
             } else if (c == '#'){
@@ -38,7 +38,6 @@ public class FileScanner {
             }
         } else {
             // mode is BODY
-            // TODO body is scanned word by word
             if (Character.isAlphabetic(c)) {
                 word();
             } else if (c == '#') {
@@ -50,18 +49,18 @@ public class FileScanner {
         while (!isBang(peek())) advance();
 
         currentDocument = contents.substring(start, current);
-        System.out.println("=== current doc ===: " + currentDocument);
+//        System.out.println("=== current doc ===: " + currentDocument);
 
-    }
-    private boolean isBang(char c) {
-        return c == '#';
     }
 
     private void word() {
         while (Character.isAlphabetic(peek())) advance();
 
-        String word = contents.substring(start, current);
-        System.out.println("word: " + word);
+        String word = contents
+                .substring(start, current)
+                .toLowerCase();
+//        System.out.println("word: " + word);
+        words.append(new WordListNode(word, currentDocument));
     }
     private void separator() {
         switch (mode) {
@@ -77,7 +76,9 @@ public class FileScanner {
         while (isBang(peek())) advance();
 
     }
-
+    private boolean isBang(char c) {
+        return c == '#';
+    }
     private char advance() {
         return contents.charAt(current++);
     }

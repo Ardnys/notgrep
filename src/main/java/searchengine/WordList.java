@@ -16,4 +16,13 @@ public class WordList {
         }
         last = node;
     }
+    public void printList() {
+        WordListNode current = root;
+        System.out.print("head->");
+        while (current != null) {
+            System.out.printf("%s->%n", current.getWord());
+            current = current.next;
+        }
+        System.out.print("->end");
+    }
 }
