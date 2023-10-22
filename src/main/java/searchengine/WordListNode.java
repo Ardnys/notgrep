@@ -6,12 +6,13 @@ import java.util.List;
 
 public class WordListNode {
     public WordListNode next;
+    private final String word;
     private final List<String> documents = new ArrayList<>();
 
 
-    public WordListNode(WordListNode next, String document) {
-        next.addDocument(document);
-        this.next = next;
+    public WordListNode(String word, String document) {
+        this.word = word;
+        this.addDocument(document);
     }
     public void addDocument(String document) {
         documents.add(document);

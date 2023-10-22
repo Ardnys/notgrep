@@ -13,9 +13,15 @@ public class SearchEngine {
             String line;
             StringBuilder allFiles = new StringBuilder();
             while ((line = bf.readLine()) != null) {
+                if (!line.equals("####")) {
+                    // regex matches all non-alpha characters except whitespaces
+                    line = line.replaceAll("[^a-zA-Z\\d\\s:]", "");
+                }
                 allFiles.append(line);
             }
             System.out.println(allFiles);
+            FileScanner scanner = new FileScanner(allFiles.toString());
+            WordList wordList = scanner.scanFile();
         }
         catch (IOException e) {
             e.printStackTrace();
