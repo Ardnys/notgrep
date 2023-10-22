@@ -18,7 +18,7 @@ public class FileScanner {
     }
 
     public WordList scanFile() {
-        while (current <= contents.length()) {
+        while (current < contents.length()) {
             start = current;
             scan();
         }
@@ -28,20 +28,53 @@ public class FileScanner {
     private void scan() {
         char c = advance();
 
-        // TODO a title is scanned until the separator is encountered
-        // TODO body is scanned word by word
+
+        if (mode == TITLE) {
+            // TODO a title is scanned until the separator is encountered
+            if (Character.isAlphabetic(c)) {
+                title();
+            } else if (c == '#'){
+                separator();
+            }
+        } else {
+            // mode is BODY
+            // TODO body is scanned word by word
+            if (Character.isAlphabetic(c)) {
+                word();
+            } else if (c == '#') {
+                separator();
+            }
+        }
+    }
+    private void title() {
+        while (!isBang(peek())) advance();
+
+        currentDocument = contents.substring(start, current);
+        System.out.println("=== current doc ===: " + currentDocument);
+
+    }
+    private boolean isBang(char c) {
+        return c == '#';
     }
 
     private void word() {
         while (Character.isAlphabetic(peek())) advance();
 
         String word = contents.substring(start, current);
+        System.out.println("word: " + word);
     }
     private void separator() {
         switch (mode) {
-            case TITLE: mode = BODY;
-            case BODY: mode = TITLE;
+            case TITLE: {
+                mode = BODY;
+                break;
+            }
+            case BODY: {
+                mode = TITLE;
+                break;
+            }
         }
+        while (isBang(peek())) advance();
 
     }
 
