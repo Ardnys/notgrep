@@ -63,12 +63,8 @@ public class FileScanner {
     }
     private void separator() {
         switch (mode) {
-            case TITLE -> {
-                mode = BODY;
-            }
-            case BODY -> {
-                mode = TITLE;
-            }
+            case TITLE -> mode = BODY;
+            case BODY -> mode = TITLE;
         }
         while (isBang(peek())) advance();
 
