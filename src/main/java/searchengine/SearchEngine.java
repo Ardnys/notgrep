@@ -4,8 +4,13 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class SearchEngine {
+
+    WordList wordList;
     public SearchEngine() {}
     public void readInputFile(String path) {
         var file = new File(path);
@@ -20,11 +25,19 @@ public class SearchEngine {
                 allFiles.append(line);
             }
             var scanner = new FileScanner(allFiles.toString());
-            var wordList = scanner.scanFile();
+            wordList = scanner.scanFile();
         }
         catch (IOException e) {
             e.printStackTrace();
             System.err.println("Error while reading the input file");
         }
+    }
+
+    public Set<String> search(List<String> keywords) {
+        if (wordList == null) {
+            System.err.println("Word list has not been initialized");
+            return new HashSet<>();
+        }
+        return wordList.search(keywords);
     }
 }

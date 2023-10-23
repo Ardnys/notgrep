@@ -2,12 +2,14 @@ package searchengine;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class WordListNode {
     public WordListNode next;
     private final String word;
-    private final List<String> documents = new ArrayList<>();
+    private final Set<String> documents = new HashSet<>();
 
 
     public WordListNode(String word, String document) {
@@ -28,8 +30,10 @@ public class WordListNode {
                 ", documents=" + Arrays.toString(documents.toArray()) +
                 '}';
     }
-
     public String getWord() {
         return word;
+    }
+    public Set<String> getDocuments() {
+        return documents;
     }
 }

@@ -1,6 +1,12 @@
 package searchengine;
 
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
 public class WordList {
     public WordListNode root;
 
@@ -18,7 +24,13 @@ public class WordList {
         int wordComparison;
         while (current != null) {
             wordComparison = node.getWord().compareTo(current.getWord());
-            if (wordComparison == 0) return;
+            if (wordComparison == 0)  {
+                var nodeDocs = node.getDocuments();
+                for (String doc : nodeDocs) {
+                    current.getDocuments().add(doc);
+                }
+                return;
+            }
             if (wordComparison > 0) {
                 if (current.next != null) {
                     if (node.getWord().compareTo(current.next.getWord()) < 0) {
@@ -40,6 +52,29 @@ public class WordList {
             }
             current = current.next;
         }
+    }
+    public Set<String> search(List<String> keywords) {
+        Set<String> docs = new HashSet<>();
+
+        for (String keyword :
+                keywords) {
+            Set<String> keywordDocs = search(keyword);
+
+            docs.addAll(keywordDocs);
+        }
+
+        return docs;
+    }
+    private Set<String> search(String keyword) {
+        var current = root;
+        while (current != null) {
+            if (current.getWord().equals(keyword)) {
+                // found the word
+                return current.getDocuments();
+            }
+            current = current.next;
+        }
+        return new HashSet<>();
     }
 
     public void printList() {
