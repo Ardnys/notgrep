@@ -11,6 +11,7 @@ public class NotGrep {
         HELP,
         UNDEF
     }
+
     public static void main(String[] args) {
         /* +-----------------------------+
             EXAMPLE USAGE - as it is in the project
@@ -84,6 +85,7 @@ public class NotGrep {
         };
 
     }
+
     private static Optional<File> checkFile(String path) {
         var file = new File(path);
         if (file.exists() && file.isFile()) {
@@ -92,6 +94,7 @@ public class NotGrep {
             return Optional.empty();
         }
     }
+
     private static void parseCommandFile(File file) {
         // TODO parse the command text file
         System.out.println("Oops, can't parse the file rn");

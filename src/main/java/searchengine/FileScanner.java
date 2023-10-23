@@ -1,12 +1,9 @@
 package searchengine;
 
-import static searchengine.FileScanner.Mode.*;
+import static searchengine.FileScanner.Mode.BODY;
+import static searchengine.FileScanner.Mode.TITLE;
 
 public class FileScanner {
-    enum Mode {
-        TITLE,
-        BODY
-    }
     private final String contents;
     private final WordList words = new WordList();
     private int start = 0;
@@ -32,7 +29,7 @@ public class FileScanner {
         if (mode == TITLE) {
             if (Character.isAlphabetic(c)) {
                 title();
-            } else if (c == '#'){
+            } else if (c == '#') {
                 separator();
             }
         } else {
@@ -44,6 +41,7 @@ public class FileScanner {
             }
         }
     }
+
     private void title() {
         while (!isBang(peek())) advance();
 
@@ -61,6 +59,7 @@ public class FileScanner {
 //        System.out.println("word: " + word);
         words.append(new WordListNode(word, currentDocument));
     }
+
     private void separator() {
         switch (mode) {
             case TITLE -> mode = BODY;
@@ -69,14 +68,22 @@ public class FileScanner {
         while (isBang(peek())) advance();
 
     }
+
     private boolean isBang(char c) {
         return c == '#';
     }
+
     private char advance() {
         return contents.charAt(current++);
     }
+
     private char peek() {
         if (current >= contents.length()) return '\0';
         return contents.charAt(current);
+    }
+
+    enum Mode {
+        TITLE,
+        BODY
     }
 }

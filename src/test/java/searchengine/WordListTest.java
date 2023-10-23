@@ -2,11 +2,10 @@ package searchengine;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class WordListTest {
 
@@ -18,6 +17,7 @@ class WordListTest {
         list.append(new WordListNode("a", "hello"));
         assertEquals("head->a->b->f->end", list.toString());
     }
+
     @Test
     void insertMiddle() {
         WordList list = new WordList();
@@ -28,6 +28,7 @@ class WordListTest {
         list.append(new WordListNode("j", "hello"));
         assertEquals("head->a->b->f->j->y->end", list.toString());
     }
+
     @Test
     void insertWords() {
         WordList list = new WordList();
@@ -38,6 +39,7 @@ class WordListTest {
         list.append(new WordListNode("apostrophe", "hello"));
         assertEquals("head->apostrophe->computer->science->television->zoom->end", list.toString());
     }
+
     @Test
     void insertDuplicate() {
         WordList list = new WordList();
@@ -64,6 +66,7 @@ class WordListTest {
         list.append(new WordListNode("vision", "language"));
         assertEquals(Set.of("tech"), list.search(List.of("computer")));
     }
+
     @Test
     void searchMultipleKeywordsInSameDoc() {
         WordList list = new WordList();
@@ -78,6 +81,7 @@ class WordListTest {
         list.append(new WordListNode("vision", "language"));
         assertEquals(Set.of("tech"), list.search(List.of("computer", "science", "television")));
     }
+
     @Test
     void searchOneKeywordInMultipleDocs() {
         WordList list = new WordList();
@@ -110,7 +114,7 @@ class WordListTest {
         list.append(new WordListNode("information", "language"));
         list.append(new WordListNode("information", "tech"));
         list.append(new WordListNode("vision", "language"));
-        assertEquals(Set.of("music","tech", "language"), list.search(List.of("computer", "guitar", "meaning", "comma")));
+        assertEquals(Set.of("music", "tech", "language"), list.search(List.of("computer", "guitar", "meaning", "comma")));
     }
 
 }
