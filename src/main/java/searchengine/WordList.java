@@ -56,39 +56,29 @@ public class WordList {
 
     public Set<String> search(List<String> keywords) {
         Set<String> docs = new HashSet<>();
+        Set<String> excludedDocs = new HashSet<>();
 
         for (int i = 0; i < keywords.size(); i++) {
-            Set<String> keywordDocs = search(keywords.get(i));
+            String word = keywords.get(i);
+            if (word.trim().charAt(0) == '!') {
+                // it is to be excluded
+                Set<String> keywordDocs = search(word.substring(1));
+                excludedDocs.addAll(keywordDocs);
+                continue;
+            }
+            Set<String> keywordDocs = search(word.trim());
             if (i == 0) {
                 docs.addAll(keywordDocs);
                 continue;
             }
-            docs = intersection(keywordDocs, docs);
+            docs.retainAll(keywordDocs);
         }
+        docs.removeAll(excludedDocs);
 
         return docs;
     }
 
-    private Set<String> intersection(Set<String> a, Set<String> b) {
-        Set<String> large, small, inter = new HashSet<>();
-        if (a.size() > b.size()) {
-            large = a;
-            small = b;
-        } else {
-            large = b;
-            small = a;
-        }
-        for (String s :
-                small) {
-            if (large.contains(s)) {
-                inter.add(s);
-            }
-        }
-        return inter;
-    }
-
     private Set<String> search(String keyword) {
-        // TODO intersection not union
         var current = root;
         while (current != null) {
             if (current.getWord().equals(keyword)) {
