@@ -110,11 +110,9 @@ class WordListTest {
         list.append(new WordListNode("comma", "language"));
         list.append(new WordListNode("apostrophe", "language"));
         list.append(new WordListNode("software", "tech"));
-        list.append(new WordListNode("guitar", "tech"));
         list.append(new WordListNode("information", "language"));
         list.append(new WordListNode("information", "tech"));
         list.append(new WordListNode("vision", "language"));
-        assertEquals(Set.of("music", "tech", "language"), list.search(List.of("computer", "guitar", "meaning", "comma")));
+        assertEquals(Set.of(), list.search(List.of("computer", "guitar")));
     }
-
 }

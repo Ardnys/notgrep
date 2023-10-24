@@ -96,7 +96,7 @@ public class NotGrep {
     }
 
     private static void parseCommandFile(File file) {
-        // TODO parse the command text file
+         // TODO parse the command text file
         System.out.println("Oops, can't parse the file rn");
     }
 }

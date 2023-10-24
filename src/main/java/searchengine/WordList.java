@@ -57,17 +57,38 @@ public class WordList {
     public Set<String> search(List<String> keywords) {
         Set<String> docs = new HashSet<>();
 
-        for (String keyword :
-                keywords) {
-            Set<String> keywordDocs = search(keyword);
-
-            docs.addAll(keywordDocs);
+        for (int i = 0; i < keywords.size(); i++) {
+            Set<String> keywordDocs = search(keywords.get(i));
+            if (i == 0) {
+                docs.addAll(keywordDocs);
+                continue;
+            }
+            docs = intersection(keywordDocs, docs);
         }
 
         return docs;
     }
 
+    private Set<String> intersection(Set<String> a, Set<String> b) {
+        Set<String> large, small, inter = new HashSet<>();
+        if (a.size() > b.size()) {
+            large = a;
+            small = b;
+        } else {
+            large = b;
+            small = a;
+        }
+        for (String s :
+                small) {
+            if (large.contains(s)) {
+                inter.add(s);
+            }
+        }
+        return inter;
+    }
+
     private Set<String> search(String keyword) {
+        // TODO intersection not union
         var current = root;
         while (current != null) {
             if (current.getWord().equals(keyword)) {
@@ -77,6 +98,15 @@ public class WordList {
             current = current.next;
         }
         return new HashSet<>();
+    }
+
+    public void remove(String document) {
+        var current = root;
+        while (current != null) {
+            // TODO maybe add node deletion for one document
+            current.getDocuments().remove(document);
+            current = current.next;
+        }
     }
 
     public void printList() {
