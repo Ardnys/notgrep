@@ -53,14 +53,14 @@ $ notgrep [OPTIONAL FLAGS] <command_file.txt>
 ```
 **Usage: - REP (Read-Evaluate-Print) normally there's an L but this doesn't have loops**
 ```console
- $ notgrep
-  > load ...
-  > search ...
-  > remove ...
-  > clear list
+$ notgrep
+> load ...
+> search ...
+> remove ...
+> clear list
 ```
 OPTIONAL FLAGS\
 -h   displays a help page\
 -bst changes the data structure to binary search tree\
 -ll  changes the data structure to linked list\
--rb  changes the data structure to red-black tree (default)\
+-rb  changes the data structure to red-black tree (default)
