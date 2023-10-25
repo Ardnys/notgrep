@@ -98,6 +98,16 @@ public class WordList {
             current = current.next;
         }
     }
+    public void clearList() {
+        // while it might be better to null all nodes of the linked list, it's not necessary.
+        // https://stackoverflow.com/questions/33935980/java-best-practice-regarding-clearing-a-linked-list
+        for (var current = root; current != null; ) {
+            var next = current.next;
+            current.next = null;
+            current = next;
+        }
+        root = null;
+    }
 
     public void printList() {
         var current = root;

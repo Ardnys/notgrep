@@ -24,7 +24,7 @@ command1;\
 command2;\
 ...
 
-Yes, the search results are written in a output file. Which also has a format like this:
+Yes, the search results are written in an output file. Which also has a format like this:
 
 query \<query-string(s)>\
 \<document 1, document 2> (search results basically)\
