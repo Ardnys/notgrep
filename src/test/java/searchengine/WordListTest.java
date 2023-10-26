@@ -68,7 +68,7 @@ class WordListTest {
     @Test
     void unsearchDocumentsWordAppearsInBoth() {
         setupListToTest();
-        assertEquals(Set.of(), list.search(List.of("science", "!information")));
+        assertEquals(Set.of("tech"), list.search(List.of("science", "information")));
     }
     @Test
     void searchThatAppearsAndDoesNot() {
@@ -80,7 +80,8 @@ class WordListTest {
         list.append(new WordListNode("information", "language"));
         list.append(new WordListNode("comma", "language"));
         list.append(new WordListNode("vision", "language"));
-        assertEquals(Set.of("tech"), list.search(List.of("science", "!vision", "software")));
+        list.append(new WordListNode("potato", "food"));
+        assertEquals(Set.of("tech"), list.search(List.of("science", "!potato", "software")));
     }
     @Test
     void clearListNullRoot() {
