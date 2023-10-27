@@ -1,6 +1,7 @@
 package searchengine;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.Optional;
 
 public class NotGrep {
@@ -63,8 +64,18 @@ public class NotGrep {
              */
 
         } else if (args.length == 1) {
-            var flagOrFile = args[0];
-            // TODO check this one too somehow
+            var pathOfFile = args[0];
+            // I choose to not accept flags in REP so this could only be a file
+            Optional<File> fileOrNot = checkFile(pathOfFile);
+
+            fileOrNot.ifPresentOrElse(
+                    NotGrep::parseCommandFile,
+                    () -> {
+                        System.err.println("Invalid command file path.");
+                        System.exit(1);
+                    });
+
+
         } else {
             // REP
             // if I have time left
@@ -97,6 +108,7 @@ public class NotGrep {
 
     private static void parseCommandFile(File file) {
          // TODO parse the command text file
+
         System.out.println("Oops, can't parse the file rn");
     }
 }

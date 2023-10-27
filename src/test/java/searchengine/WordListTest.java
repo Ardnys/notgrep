@@ -9,18 +9,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 class WordListTest {
-    WordList list;
+    NotTree list;
 
     void setupListToTest() {
         if (list == null) {
-            list = new WordList();
-            list.append(new WordListNode("science", "tech"));
-            list.append(new WordListNode("computer", "tech"));
-            list.append(new WordListNode("software", "tech"));
-            list.append(new WordListNode("information", "tech"));
-            list.append(new WordListNode("information", "language"));
-            list.append(new WordListNode("comma", "language"));
-            list.append(new WordListNode("vision", "language"));
+            list = new NotTree();
+            list.append(new NotTreeNode("science", "tech"));
+            list.append(new NotTreeNode("computer", "tech"));
+            list.append(new NotTreeNode("software", "tech"));
+            list.append(new NotTreeNode("information", "tech"));
+            list.append(new NotTreeNode("information", "language"));
+            list.append(new NotTreeNode("comma", "language"));
+            list.append(new NotTreeNode("vision", "language"));
         }
     }
 
@@ -72,21 +72,21 @@ class WordListTest {
     }
     @Test
     void searchThatAppearsAndDoesNot() {
-        WordList list = new WordList();
-        list.append(new WordListNode("science", "tech"));
-        list.append(new WordListNode("computer", "tech"));
-        list.append(new WordListNode("software", "tech"));
-        list.append(new WordListNode("information", "tech"));
-        list.append(new WordListNode("information", "language"));
-        list.append(new WordListNode("comma", "language"));
-        list.append(new WordListNode("vision", "language"));
-        list.append(new WordListNode("potato", "food"));
+        NotTree list = new NotTree();
+        list.append(new NotTreeNode("science", "tech"));
+        list.append(new NotTreeNode("computer", "tech"));
+        list.append(new NotTreeNode("software", "tech"));
+        list.append(new NotTreeNode("information", "tech"));
+        list.append(new NotTreeNode("information", "language"));
+        list.append(new NotTreeNode("comma", "language"));
+        list.append(new NotTreeNode("vision", "language"));
+        list.append(new NotTreeNode("potato", "food"));
         assertEquals(Set.of("tech"), list.search(List.of("science", "!potato", "software")));
     }
     @Test
     void clearListNullRoot() {
         setupListToTest();
-        list.clearList();
+        list.reset();
         assertNull(list.root);
     }
 }

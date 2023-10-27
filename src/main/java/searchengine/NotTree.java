@@ -5,21 +5,21 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class WordList {
-    public WordListNode root;
+public class NotTree implements EngineableStructure {
+    public NotTreeNode root;
 
-    public WordList() {
+    public NotTree() {
     }
 
-    public void append(WordListNode node) {
+    public void append(EngineableNode node) {
         if (root == null) {
-            root = node;
+            root = (NotTreeNode) node;
         } else {
-            insert(node);
+            insert((NotTreeNode) node);
         }
     }
 
-    private void insert(WordListNode node) {
+    private void insert(NotTreeNode node) {
         var current = root;
         int wordComparison;
         while (current != null) {
@@ -54,6 +54,7 @@ public class WordList {
         }
     }
 
+    @Override
     public Set<String> search(List<String> keywords) {
         Set<String> docs = new HashSet<>();
         Set<String> excludedDocs = new HashSet<>();
@@ -90,6 +91,7 @@ public class WordList {
         return new HashSet<>();
     }
 
+    @Override
     public void remove(String document) {
         var current = root;
         while (current != null) {
@@ -98,7 +100,13 @@ public class WordList {
             current = current.next;
         }
     }
-    public void clearList() {
+
+    @Override
+    public void reset() {
+        clearList();
+    }
+
+    private void clearList() {
         // while it might be better to null all nodes of the linked list, it's not necessary.
         // https://stackoverflow.com/questions/33935980/java-best-practice-regarding-clearing-a-linked-list
         for (var current = root; current != null; ) {

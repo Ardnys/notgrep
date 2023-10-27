@@ -4,13 +4,13 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-public class WordListNode {
+public class NotTreeNode implements EngineableNode{
     private final String word;
     private final Set<String> documents = new HashSet<>();
-    public WordListNode next;
+    public NotTreeNode next;
 
 
-    public WordListNode(String word, String document) {
+    public NotTreeNode(String word, String document) {
         this.word = word;
         this.addDocument(document);
     }

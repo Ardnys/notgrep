@@ -10,7 +10,7 @@ import java.util.Set;
 
 public class SearchEngine {
 
-    WordList wordList;
+    EngineableStructure maybeTree;
 
     public SearchEngine() {
     }
@@ -28,7 +28,7 @@ public class SearchEngine {
                 allFiles.append(line);
             }
             var scanner = new FileScanner(allFiles.toString());
-            wordList = scanner.scanFile();
+            maybeTree = scanner.scanFile();
         } catch (IOException e) {
             e.printStackTrace();
             System.err.println("Error while reading the input file");
@@ -36,10 +36,10 @@ public class SearchEngine {
     }
 
     public Set<String> search(List<String> keywords) {
-        if (wordList == null) {
+        if (maybeTree == null) {
             System.err.println("Word list has not been initialized");
             return new HashSet<>();
         }
-        return wordList.search(keywords);
+        return maybeTree.search(keywords);
     }
 }

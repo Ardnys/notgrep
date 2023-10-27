@@ -5,7 +5,7 @@ import static searchengine.FileScanner.Mode.TITLE;
 
 public class FileScanner {
     private final String contents;
-    private final WordList words = new WordList();
+    private final EngineableStructure words = new NotTree();
     private int start = 0;
     private int current = 0;
     private String currentDocument;
@@ -14,7 +14,7 @@ public class FileScanner {
         this.contents = contents;
     }
 
-    public WordList scanFile() {
+    public EngineableStructure scanFile() {
         while (current < contents.length()) {
             start = current;
             scan();
@@ -57,7 +57,7 @@ public class FileScanner {
                 .substring(start, current)
                 .toLowerCase();
 //        System.out.println("word: " + word);
-        words.append(new WordListNode(word, currentDocument));
+        words.append(new NotTreeNode(word, currentDocument));
     }
 
     private void separator() {
