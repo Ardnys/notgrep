@@ -41,6 +41,7 @@ public class NotGrep {
         } else if (args.length == 2) {
             var dsFlag = args[0];
             var pathOfFile = args[1];
+            System.out.println("two flags okay");
 
             // types make it a bit clear here
             Flag flag = checkFlag(dsFlag);
@@ -67,6 +68,7 @@ public class NotGrep {
             var pathOfFile = args[0];
             // I choose to not accept flags in REP so this could only be a file
             Optional<File> fileOrNot = checkFile(pathOfFile);
+            System.out.println("one flag okay");
 
             fileOrNot.ifPresentOrElse(
                     NotGrep::parseCommandFile,
@@ -77,11 +79,11 @@ public class NotGrep {
 
 
         } else {
+            System.out.println("ohoho slow down cowboy");
             // REP
             // if I have time left
         }
 
-        new SearchEngine().readInputFile("smolfilesystem.txt");
     }
 
     private static Flag checkFlag(String flag) {
@@ -107,8 +109,8 @@ public class NotGrep {
     }
 
     private static void parseCommandFile(File file) {
-         // TODO parse the command text file
-
-        System.out.println("Oops, can't parse the file rn");
+        System.out.println("Parsing the file...");
+        var parser = new CommandParser(file);
+        parser.parse();
     }
 }

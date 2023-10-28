@@ -16,7 +16,6 @@ public class SearchEngine {
     }
 
     public void readInputFile(String path) {
-        var file = new File(path);
         try (var bf = Files.newBufferedReader(Paths.get(path))) {
             String line;
             var allFiles = new StringBuilder();
@@ -41,5 +40,11 @@ public class SearchEngine {
             return new HashSet<>();
         }
         return maybeTree.search(keywords);
+    }
+    public void remove(String document) {
+        maybeTree.remove(document);
+    }
+    public void reset() {
+        maybeTree.reset();
     }
 }
