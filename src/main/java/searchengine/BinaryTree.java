@@ -60,7 +60,7 @@ public class BinaryTree implements EngineableStructure {
             if (node.right != null)
                 queue.add(node.right);
         }
-        return levelOrder.toString();
+        return levelOrder.toString().trim();
     }
 
 }
