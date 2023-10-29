@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-public class NotTreeNode implements EngineableNode{
+public class NotTreeNode implements EngineableNode {
     private final String word;
     private final Set<String> documents = new HashSet<>();
     public NotTreeNode next;

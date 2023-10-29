@@ -1,4 +1,5 @@
 output.txt;
 reset;
 load smolfilesystem.txt;
-search theory, science;
+search computer, science;
+remove Physics;

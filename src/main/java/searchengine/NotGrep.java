@@ -1,7 +1,6 @@
 package searchengine;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.Optional;
 
 public class NotGrep {
@@ -111,6 +110,11 @@ public class NotGrep {
     private static void parseCommandFile(File file) {
         System.out.println("Parsing the file...");
         var parser = new CommandParser(file);
-        parser.parse();
+        try {
+            parser.parse();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getMessage());
+        }
     }
 }

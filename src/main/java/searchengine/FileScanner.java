@@ -10,6 +10,7 @@ public class FileScanner {
     private int current = 0;
     private String currentDocument;
     private Mode mode = TITLE;
+
     public FileScanner(String contents) {
         this.contents = contents;
     }

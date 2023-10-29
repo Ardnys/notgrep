@@ -1,6 +1,5 @@
 package searchengine;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -15,7 +14,7 @@ public class SearchEngine {
     public SearchEngine() {
     }
 
-    public void readInputFile(String path) {
+    public void load(String path) {
         try (var bf = Files.newBufferedReader(Paths.get(path))) {
             String line;
             var allFiles = new StringBuilder();
@@ -29,8 +28,7 @@ public class SearchEngine {
             var scanner = new FileScanner(allFiles.toString());
             maybeTree = scanner.scanFile();
         } catch (IOException e) {
-            e.printStackTrace();
-            System.err.println("Error while reading the input file");
+            System.err.println("Error while loading the input file");
         }
     }
 
@@ -41,10 +39,17 @@ public class SearchEngine {
         }
         return maybeTree.search(keywords);
     }
-    public void remove(String document) {
-        maybeTree.remove(document);
+
+    public void remove(List<String> documents) {
+        for (String doc : documents) {
+            maybeTree.remove(doc);
+        }
     }
+
     public void reset() {
+        if (maybeTree == null) {
+            return;
+        }
         maybeTree.reset();
     }
 }
