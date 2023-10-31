@@ -9,6 +9,7 @@ import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -63,41 +64,48 @@ public class CommandParser {
 
     private void parseCommands() throws Exception {
         while (!commands.isEmpty()) {
-            var arguments = Arrays.asList(commands.poll().split(" "));
-            var commandString = arguments.get(0).trim(); // and the rest are arguments.
+            var commandQuery = commands.poll();
+            int commandArgSeparator = commandQuery.indexOf(' ');
+            String commandString;
+            List<String> arguments = new ArrayList<>();
+            if (commandArgSeparator == -1) {
+                // something like reset has no arguments hence no separator
+                commandString = commandQuery;
+            } else {
+                commandString = commandQuery.substring(0, commandArgSeparator);
+                arguments = Arrays.asList(commandQuery.substring(commandArgSeparator).split(","));
+            }
             Command command = Command.valueOf(commandString.toUpperCase()); // this is cool
 
             // then we can pattern match it
             switch (command) {
                 case LOAD -> {
-                    if (arguments.size() != 2) throw new Exception("Expected input path for LOAD command.\n");
+                    if (arguments.size() != 1) throw new Exception("Expected input path for LOAD command.\n");
 
-                    engine.load(arguments.get(1));
+                    engine.load(arguments.get(0).trim());
                 }
                 case RESET -> {
-                    if (arguments.size() > 1) throw new Exception("Unexpected argument in RESET command.\n");
+                    if (arguments.size() > 0) throw new Exception("Unexpected argument in RESET command.\n");
 
                     engine.reset();
                 }
                 case REMOVE -> {
-                    if (arguments.size() < 2) throw new Exception("Expected document arguments in REMOVE command.\n");
+                    if (arguments.size() < 1) throw new Exception("Expected document arguments in REMOVE command.\n");
 
                     List<String> args = arguments.stream()
                             .map(arg -> arg.replace(',', ' '))
                             .map(String::trim)
                             .collect(Collectors.toList());
 
-                    args.remove(0);
                     engine.remove(args);
                 }
                 case SEARCH -> {
-                    if (arguments.size() < 2) throw new Exception("Expected document arguments in SEARCH command.\n");
+                    if (arguments.size() < 1) throw new Exception("Expected document arguments in SEARCH command.\n");
 
                     List<String> args = arguments.stream()
                             .map(arg -> arg.replace(',', ' '))
                             .map(String::trim)
                             .collect(Collectors.toList());
-                    args.remove(0);
 
                     Set<String> searchResults = engine.search(args);
                     logToOutputFile(args, searchResults);

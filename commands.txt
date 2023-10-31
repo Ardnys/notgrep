@@ -2,3 +2,5 @@ output.txt;
 reset;
 load smolfilesystem.txt;
 search study;
+remove Computer Science;
+search study;
