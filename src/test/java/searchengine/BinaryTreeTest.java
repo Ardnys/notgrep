@@ -13,14 +13,14 @@ class BinaryTreeTest {
     void setupTree() {
         if (tree == null) {
             tree = new BinaryTree();
-            tree.append(new BinaryTreeNode("science", "cs"));
-            tree.append(new BinaryTreeNode("computer", "cs"));
-            tree.append(new BinaryTreeNode("software", "cs"));
-            tree.append(new BinaryTreeNode("information", "cs"));
-            tree.append(new BinaryTreeNode("information", "lang"));
-            tree.append(new BinaryTreeNode("comma", "lang"));
-            tree.append(new BinaryTreeNode("vision", "lang"));
-            tree.append(new BinaryTreeNode("alphabet", "lang"));
+            tree.append("science", "cs");
+            tree.append("computer", "cs");
+            tree.append("software", "cs");
+            tree.append("information", "cs");
+            tree.append("information", "lang");
+            tree.append("comma", "lang");
+            tree.append("vision", "lang");
+            tree.append("alphabet", "lang");
         }
     }
 

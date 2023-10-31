@@ -5,17 +5,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class NotTree implements EngineableStructure {
+public class NotTree implements EngineableStructure{
     public NotTreeNode root;
 
     public NotTree() {
     }
 
-    public void append(EngineableNode node) {
+    public void append(String word, String document) {
         if (root == null) {
-            root = (NotTreeNode) node;
+            root = new NotTreeNode(word, document);
         } else {
-            insert((NotTreeNode) node);
+            insert(new NotTreeNode(word, document));
         }
     }
 

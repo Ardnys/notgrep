@@ -1,4 +1,4 @@
 output.txt;
 reset;
 load smolfilesystem.txt;
-search study, science;
+search study;

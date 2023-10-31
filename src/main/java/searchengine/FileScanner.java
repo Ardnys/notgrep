@@ -58,7 +58,7 @@ public class FileScanner {
                 .substring(start, current)
                 .toLowerCase();
 //        System.out.println("word: " + word);
-        words.append(new NotTreeNode(word, currentDocument));
+        words.append(word, currentDocument);
     }
 
     private void separator() {

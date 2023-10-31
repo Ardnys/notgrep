@@ -3,7 +3,7 @@ package searchengine;
 import java.util.HashSet;
 import java.util.Set;
 
-public class BinaryTreeNode implements EngineableNode {
+public class BinaryTreeNode {
     public BinaryTreeNode left, right;
     private final String word;
     private final Set<String> documents = new HashSet<>();

@@ -5,7 +5,7 @@ import java.util.Set;
 
 public class RedBlackTree implements EngineableStructure {
     @Override
-    public void append(EngineableNode node) {
+    public void append(String word, String document) {
 
     }
 

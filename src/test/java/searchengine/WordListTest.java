@@ -14,13 +14,13 @@ class WordListTest {
     void setupListToTest() {
         if (list == null) {
             list = new NotTree();
-            list.append(new NotTreeNode("science", "tech"));
-            list.append(new NotTreeNode("computer", "tech"));
-            list.append(new NotTreeNode("software", "tech"));
-            list.append(new NotTreeNode("information", "tech"));
-            list.append(new NotTreeNode("information", "language"));
-            list.append(new NotTreeNode("comma", "language"));
-            list.append(new NotTreeNode("vision", "language"));
+            list.append("science", "tech");
+            list.append("computer", "tech");
+            list.append("software", "tech");
+            list.append("information", "tech");
+            list.append("information", "language");
+            list.append("comma", "language");
+            list.append("vision", "language");
         }
     }
 
@@ -73,14 +73,14 @@ class WordListTest {
     @Test
     void searchThatAppearsAndDoesNot() {
         NotTree list = new NotTree();
-        list.append(new NotTreeNode("science", "tech"));
-        list.append(new NotTreeNode("computer", "tech"));
-        list.append(new NotTreeNode("software", "tech"));
-        list.append(new NotTreeNode("information", "tech"));
-        list.append(new NotTreeNode("information", "language"));
-        list.append(new NotTreeNode("comma", "language"));
-        list.append(new NotTreeNode("vision", "language"));
-        list.append(new NotTreeNode("potato", "food"));
+        list.append("science", "tech");
+        list.append("computer", "tech");
+        list.append("software", "tech");
+        list.append("information", "tech");
+        list.append("information", "language");
+        list.append("comma", "language");
+        list.append("vision", "language");
+        list.append("potato", "food");
         assertEquals(Set.of("tech"), list.search(List.of("science", "!potato", "software")));
     }
     @Test
