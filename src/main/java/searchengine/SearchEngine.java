@@ -14,7 +14,7 @@ public class SearchEngine {
     public SearchEngine() {
     }
 
-    public void load(String path) {
+    public void load(String path) throws IOException {
         try (var bf = Files.newBufferedReader(Paths.get(path))) {
             String line;
             var allFiles = new StringBuilder();
@@ -28,14 +28,15 @@ public class SearchEngine {
             var scanner = new FileScanner(allFiles.toString());
             maybeTree = scanner.scanFile();
         } catch (IOException e) {
-            System.err.println("Error while loading the input file");
+//            System.err.println("Error while loading the input file");
+            throw new IOException("Invalid input path.");
         }
     }
 
-    public Set<String> search(List<String> keywords) {
+    public Set<String> search(List<String> keywords) throws Exception {
         if (maybeTree == null) {
-            System.err.println("Word list has not been initialized");
-            return new HashSet<>();
+//            System.err.println("Word list has not been initialized");
+            throw new Exception("Word list has not been initialized.");
         }
         return maybeTree.search(keywords);
     }

@@ -11,6 +11,7 @@ import java.nio.file.Paths;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Queue;
@@ -22,13 +23,14 @@ public class CommandParser {
     Queue<String> commands = new ArrayDeque<>();
     SearchEngine engine = new SearchEngine();
     File outputFile;
-    StringBuilder outputString = new StringBuilder();
 
     public CommandParser(File file) {
         // TODO accept the flag for DS here and send it to search engine
-        System.out.println("Reading the file " + file.getAbsolutePath());
+//        System.out.println("Reading the file " + file.getAbsolutePath());
         readCommandFile(file);
     }
+    // for testing only
+    public CommandParser() {}
 
     private void readCommandFile(File file) {
         try (var reader = Files.newBufferedReader(file.toPath())) {
@@ -85,12 +87,12 @@ public class CommandParser {
                     engine.load(arguments.get(0).trim());
                 }
                 case RESET -> {
-                    if (arguments.size() > 0) throw new Exception("Unexpected argument in RESET command.\n");
+                    if (!arguments.isEmpty()) throw new Exception("Unexpected argument in RESET command.\n");
 
                     engine.reset();
                 }
                 case REMOVE -> {
-                    if (arguments.size() < 1) throw new Exception("Expected document arguments in REMOVE command.\n");
+                    if (arguments.isEmpty()) throw new Exception("Expected document arguments in REMOVE command.\n");
 
                     List<String> args = arguments.stream()
                             .map(arg -> arg.replace(',', ' '))
@@ -100,7 +102,7 @@ public class CommandParser {
                     engine.remove(args);
                 }
                 case SEARCH -> {
-                    if (arguments.size() < 1) throw new Exception("Expected document arguments in SEARCH command.\n");
+                    if (arguments.isEmpty()) throw new Exception("Expected document arguments in SEARCH command.\n");
 
                     List<String> args = arguments.stream()
                             .map(arg -> arg.replace(',', ' '))
@@ -120,28 +122,80 @@ public class CommandParser {
         }
         try(var writer = new BufferedWriter(new FileWriter(outputFile, true))) {
             writer.write("query: ");
-            StringBuilder sb = new StringBuilder();
-            for (String arg : searchArgs) {
-                sb.append(arg);
-                sb.append(',');
-                sb.append(' ');
-            }
-            sb.append('\n');
-            writer.write(sb.toString());
-            sb.setLength(0);
-            for (String res : searchResults) {
-                sb.append(res);
-                sb.append(',');
-                sb.append(' ');
-                System.out.println("result: " + res);
-            }
-            sb.append('\n');
-            writer.write(sb.toString());
+            String args = String.join(", ", searchArgs);
+
+            writer.write(args);
+            writer.write('\n');
+            String result = String.join(", ", searchResults);
+
+            writer.write(result);
             writer.write('\n');
         } catch (IOException | RuntimeException e) {
             e.printStackTrace();
             System.err.println("error while writing to output file.");
         }
+    }
+    /*
+    +---------------------------------------------------------------------------------------+
+    |                                                                                       |
+    |                ! ! ! !  T E S T   M E T H O D ! ! !                                   |
+    |                                       B E   C A R E F U L                             |
+    |                               N O T    I N T E N D E D   F O R   U S E                |
+    |                                                                                       |
+    +----------------------------------------------------------------------------------------
+     */
+    public String testCommands(Queue<String> commands) throws Exception {
+        Set<String> searchResults = new HashSet<>();
+        while (!commands.isEmpty()) {
+            var commandQuery = commands.poll();
+            int commandArgSeparator = commandQuery.indexOf(' ');
+            String commandString;
+            List<String> arguments = new ArrayList<>();
+            if (commandArgSeparator == -1) {
+                // something like reset has no arguments hence no separator
+                commandString = commandQuery;
+            } else {
+                commandString = commandQuery.substring(0, commandArgSeparator);
+                arguments = Arrays.asList(commandQuery.substring(commandArgSeparator).split(","));
+            }
+            Command command = Command.valueOf(commandString.toUpperCase()); // this is cool
+
+            // then we can pattern match it
+            switch (command) {
+                case LOAD -> {
+                    if (arguments.size() != 1) throw new Exception("Expected input path for LOAD command.\n");
+
+                    engine.load(arguments.get(0).trim());
+                }
+                case RESET -> {
+                    if (!arguments.isEmpty()) throw new Exception("Unexpected argument in RESET command.\n");
+
+                    engine.reset();
+                }
+                case REMOVE -> {
+                    if (arguments.isEmpty()) throw new Exception("Expected document arguments in REMOVE command.\n");
+
+                    List<String> args = arguments.stream()
+                            .map(arg -> arg.replace(',', ' '))
+                            .map(String::trim)
+                            .collect(Collectors.toList());
+
+                    engine.remove(args);
+                }
+                case SEARCH -> {
+                    if (arguments.isEmpty()) throw new Exception("Expected document arguments in SEARCH command.\n");
+
+                    List<String> args = arguments.stream()
+                            .map(arg -> arg.replace(',', ' '))
+                            .map(String::trim)
+                            .collect(Collectors.toList());
+
+                    searchResults = engine.search(args);
+                }
+            }
+        }
+
+        return String.join(", ", searchResults);
     }
 
     private enum Command {

@@ -108,7 +108,6 @@ public class NotGrep {
     }
 
     private static void parseCommandFile(File file) {
-        System.out.println("Parsing the file...");
         var parser = new CommandParser(file);
         try {
             parser.parse();
