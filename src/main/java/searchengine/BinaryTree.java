@@ -81,10 +81,8 @@ public class BinaryTree implements EngineableStructure{
 
     @Override
     public void reset() {
-        if (root != null) {
-            root = null;
-            // chop chop GC, work is waiting
-        }
+        root = null;
+        // chop chop GC, work is waiting
     }
 
     @Override
