@@ -13,9 +13,8 @@ def change_file():
                 # print(f"file {file}\ncontents {contents}")
                 big_file.write(file + "\n")
                 big_file.write('####\n')
-                contents_str = ""
-                for string in contents:
-                    contents_str += string
+
+                contents_str = "".join(contents)
                 big_file.write(contents_str + "\n")
                 big_file.write('####\n')
 
