@@ -10,7 +10,10 @@ public class RedBlackTree implements EngineableStructure {
 
     @Override
     public void append(String word, String document) {
-
+        insert(new RedBlackTreeNode(word, document));
+    }
+    private void insert(RedBlackTreeNode node) {
+       // not now
     }
 
     @Override

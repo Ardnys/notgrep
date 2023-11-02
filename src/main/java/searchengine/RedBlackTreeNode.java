@@ -4,15 +4,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class RedBlackTreeNode {
+    public RedBlackTreeNode parent;
     public RedBlackTreeNode left, right;
-    public int color = 0;
+    public Color color = Color.RED;
     private final String word;
     private final Set<String> documents = new HashSet<>();
-    /*
-        0 -> red
-        1 -> black
-        this could be enum for readability
-     */
+
     public RedBlackTreeNode(String word, String document) {
         this.word = word;
         documents.add(document);
