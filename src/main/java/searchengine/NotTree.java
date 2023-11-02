@@ -60,7 +60,7 @@ public class NotTree implements EngineableStructure{
         Set<String> excludedDocs = new HashSet<>();
 
         for (int i = 0; i < keywords.size(); i++) {
-            String word = keywords.get(i);
+            var word = keywords.get(i);
             if (word.trim().charAt(0) == '!') {
                 // it is to be excluded
                 Set<String> keywordDocs = search(word.substring(1));
