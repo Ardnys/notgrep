@@ -199,10 +199,4 @@ public class CommandParser {
         return String.join(", ", searchResults);
     }
 
-    private enum Command {
-        LOAD,
-        SEARCH,
-        REMOVE,
-        RESET,
-    }
 }

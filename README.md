@@ -42,15 +42,13 @@ As you can tell, there's a lot of peculiar things going on with the thing descri
 - Lack of interactivity.
 - Command file doesn't make a lot of sense.
 - Output file also doesn't make a lot of sense.
-- clear list command needs renaming.
 
 To me, this programs _screams_ REPL with an optional command file feature, like scripting languages (like writing `python` starts a REPL and `python <file.py>` interprets the file). There is no loop so it's more like REP but do you see where I am going at?\
 I have this image in my mind and it looks nicer in my opinion:
 
-**Usage: As is in the project without an output file**
+**Usage: As is in the project**
 ```console
 $ notgrep [OPTIONAL FLAGS] <command_file.txt>
-(just prints to stdout)
 ```
 **Usage: - REP (Read-Evaluate-Print) normally there's an L but this doesn't have loops**
 ```console
