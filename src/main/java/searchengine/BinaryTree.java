@@ -6,14 +6,17 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 
-public class BinaryTree implements EngineableStructure{
+public class BinaryTree implements EngineableStructure {
     public BinaryTreeNode root = null;
-    public BinaryTree() {}
+
+    public BinaryTree() {
+    }
 
     @Override
     public void append(String word, String document) {
         root = insert(root, new BinaryTreeNode(word, document));
     }
+
     private BinaryTreeNode insert(BinaryTreeNode root, BinaryTreeNode node) {
         if (root == null) {
             root = node;
@@ -72,6 +75,7 @@ public class BinaryTree implements EngineableStructure{
     public void remove(String document) {
         remove(root, document);
     }
+
     private void remove(BinaryTreeNode node, String document) {
         if (node == null) return;
         node.getDocuments().remove(document);

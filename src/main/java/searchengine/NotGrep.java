@@ -1,7 +1,10 @@
 package searchengine;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,16 +27,17 @@ public class NotGrep {
 
            EXAMPLE USAGE - REP (Read-Evaluate-Print) normally there's an L but this doesn't have loops
            $ notgrep
-            > load ...
-            > search ...
-            > remove ...
-            > clear list ...
+            > load ...;
+            > search ...;
+            > remove ...;
+            > reset;
+            > help;
+            > exit;
 
             OPTIONAL FLAGS
             -h   displays a help page
             -bst changes the data structure to binary search tree
             -ll  changes the data structure to linked list
-            -rb  changes the data structure to red-black tree (default)
 
            +-----------------------------+   */
 
@@ -90,117 +94,177 @@ public class NotGrep {
             }
 
         } else {
+            /*
+             W A R N I N G !
+             what's below is just madness and I don't mean harm.
+             i thought, what if i didn't add any more classes?
+             also i read some Java code that C devs wrote, inspiring stuff to say the least.
+             getting close to double-digit indentation is kinda fun not gonna lie
+             */
             System.out.println("easy come, easy go...");
             // REP
             // if I have time left
             // TODO perhaps test this even more
+            var defaultLogFileName = "log.txt";
+            FileOutputStream fos = null;
+            try {
+                fos = new FileOutputStream(defaultLogFileName);
+//                PrintStream logger = new PrintStream(new DualOutputStream(System.out, fileOutputStream));
+
+                // that's an interesting idea
+
+                // both stdout and stderr are also redirected into the file
+                // to restore:
+                // System.setOut(new PrintStream(new FileOutputStream(FileDescriptor.out));
+//                System.setOut(logger);
+//                System.setErr(logger);
+            } catch (IOException e) {
+                System.err.println("Error while logging");
+                // TODO maybe exit here?
+            }
+
             var scanner = new Scanner(System.in);
             Queue<String> commands = new ArrayDeque<>();
             SearchEngine engine = new SearchEngine(Flag.BST);
 
             while (true) {
                 System.out.print("> ");
-                var line = scanner.nextLine().toCharArray();
-                var query = new StringBuilder();
-                for (char c : line) {
-                    if (c == ';') {
-                        commands.add(query.toString().trim());
+                assert fos != null;
+
+                try {
+                    fos.write("> \n".getBytes());
+                    var line = scanner.nextLine().toCharArray();
+                    fos.write(Arrays.toString(line).getBytes());
+                    var query = new StringBuilder();
+                    for (char c : line) {
+                        if (c == ';') {
+                            commands.add(query.toString().trim());
 //                        System.out.println("Command: " + query.toString().trim());
-                        query.setLength(0);
-                    } else {
-                        query.append(c);
-                    }
-                }
-                while (!commands.isEmpty()) {
-                    var commandQuery = commands.poll();
-                    int commandArgSeparator = commandQuery.indexOf(' ');
-                    String commandString;
-                    List<String> arguments = new ArrayList<>();
-                    if (commandArgSeparator == -1) {
-                        // something like reset has no arguments hence no separator
-                        commandString = commandQuery;
-                    } else {
-                        commandString = commandQuery.substring(0, commandArgSeparator);
-                        arguments = Arrays.asList(commandQuery.substring(commandArgSeparator).split(","));
-                    }
-
-                    try {
-
-                        Command command = Command.valueOf(commandString.toUpperCase()); // this is cool
-
-                        boolean yes = false;
-                        switch (command) {
-                            case LOAD -> {
-                                if (arguments.size() != 1) System.err.println("Expected input path for LOAD command.\n");
-
-                                try {
-                                    engine.load(arguments.get(0).trim());
-                                    System.out.printf("Loaded %s...%n", arguments.get(0).trim());
-                                } catch (IOException e) {
-                                    System.err.println(e.getMessage());
-                                    yes = true;
-                                }
-                            }
-                            case RESET -> {
-                                if (!arguments.isEmpty()) System.err.println("Unexpected argument in RESET command.\n");
-
-                                engine.reset();
-                                System.out.println("Engine is reset");
-                            }
-                            case REMOVE -> {
-                                if (arguments.isEmpty()) System.err.println("Expected document arguments in REMOVE command.\n");
-
-                                List<String> params = arguments.stream()
-                                        .map(arg -> arg.replace(',', ' '))
-                                        .map(String::trim)
-                                        .collect(Collectors.toList());
-
-                                engine.remove(params);
-                                System.out.printf("Successfully removed %s.%n", String.join(", ", params));
-                            }
-                            case SEARCH -> {
-                                if (arguments.isEmpty()) System.err.println("Expected document arguments in SEARCH command.\n");
-
-                                List<String> params = arguments.stream()
-                                        .map(arg -> arg.replace(',', ' '))
-                                        .map(String::trim)
-                                        .collect(Collectors.toList());
-
-                                System.out.printf("Searching %s...%n", String.join(", ", params));
-
-                                try {
-                                    Set<String> searchResults = engine.search(params);
-                                    System.out.printf("Documents found: %s%n", String.join(",\n", searchResults));
-                                } catch (Exception e) {
-                                    System.err.println(e.getMessage());
-                                    yes = true;
-                                }
-                            }
-                            case EXIT -> {
-                                if (!arguments.isEmpty()) System.err.println("Unexpected argument in EXIT command.");
-
-                                System.out.println("Exiting...");
-                                System.out.println("See you space cowboy");
-                                System.exit(35);
-                            }
-                            case HELP -> {
-                                if (!arguments.isEmpty()) System.err.println("Unexpected argument in HELP command.");
-
-                                displayHelpPage();
-                            }
+                            query.setLength(0);
+                        } else {
+                            query.append(c);
                         }
-                        if (yes) {
+                    }
+                    while (!commands.isEmpty()) {
+                        var commandQuery = commands.poll();
+                        int commandArgSeparator = commandQuery.indexOf(' ');
+                        String commandString;
+                        List<String> arguments = new ArrayList<>();
+                        if (commandArgSeparator == -1) {
+                            // something like reset has no arguments hence no separator
+                            commandString = commandQuery;
+                        } else {
+                            commandString = commandQuery.substring(0, commandArgSeparator);
+                            arguments = Arrays.asList(commandQuery.substring(commandArgSeparator).split(","));
+                        }
+
+                        try {
+
+                            Command command = Command.valueOf(commandString.toUpperCase()); // this is cool
+
+                            boolean yes = false;
+                            switch (command) {
+                                case LOAD -> {
+                                    if (arguments.size() != 1) {
+                                        System.err.println("Expected input path for LOAD command.\n");
+                                        fos.write("Expected input path for LOAD command.\\n".getBytes());
+                                    }
+
+
+                                    try {
+                                        engine.load(arguments.get(0).trim());
+                                        System.out.printf("Loaded %s...%n", arguments.get(0).trim());
+                                        var s = String.format("Loaded %s...%n", arguments.get(0).trim());
+                                        fos.write(s.getBytes());
+                                    } catch (IOException e) {
+                                        System.err.println(e.getMessage());
+                                        fos.write(e.getMessage().getBytes());
+                                        yes = true;
+                                    }
+                                }
+                                case RESET -> {
+                                    if (!arguments.isEmpty())
+                                        System.err.println("Unexpected argument in RESET command.\n");
+
+                                    engine.reset();
+                                    System.out.println("Engine is reset");
+                                    fos.write("Engine is reset\n".getBytes());
+                                }
+                                case REMOVE -> {
+                                    if (arguments.isEmpty())
+                                        System.err.println("Expected document arguments in REMOVE command.\n");
+
+                                    List<String> params = arguments.stream()
+                                            .map(arg -> arg.replace(',', ' '))
+                                            .map(String::trim)
+                                            .collect(Collectors.toList());
+
+                                    engine.remove(params);
+                                    System.out.printf("Successfully removed %s.%n", String.join(", ", params));
+                                    var s = String.format("Successfully removed %s.%n", String.join(", ", params));
+                                    fos.write(s.getBytes());
+                                }
+                                case SEARCH -> {
+                                    if (arguments.isEmpty())
+                                        System.err.println("Expected document arguments in SEARCH command.\n");
+
+                                    List<String> params = arguments.stream()
+                                            .map(arg -> arg.replace(',', ' '))
+                                            .map(String::trim)
+                                            .collect(Collectors.toList());
+
+                                    System.out.printf("Searching %s...%n", String.join(", ", params));
+                                    var s = String.format("Searching %s...%n", String.join(", ", params));
+                                    fos.write(s.getBytes());
+
+                                    try {
+                                        Set<String> searchResults = engine.search(params);
+                                        System.out.printf("Documents found:%n%s%n", String.join(",\n", searchResults));
+                                        var r = String.format("Documents found:%n%s%n", String.join(",\n", searchResults));
+                                        fos.write(r.getBytes());
+                                    } catch (Exception e) {
+                                        System.err.println(e.getMessage());
+                                        yes = true;
+                                    }
+                                }
+                                case EXIT -> {
+                                    if (!arguments.isEmpty())
+                                        System.err.println("Unexpected argument in EXIT command.");
+
+                                    System.out.println("Exiting...");
+                                    System.out.println("Session log is saved to log.txt.");
+                                    System.out.println("See you space cowboy");
+                                    fos.write("see you space cowboy".getBytes());
+
+                                    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu/MM/dd HH:mm:ss");
+                                    LocalDateTime now = LocalDateTime.now();
+
+                                    fos.write(dtf.format(now).getBytes());
+                                    System.exit(35);
+                                }
+                                case HELP -> {
+                                    if (!arguments.isEmpty())
+                                        System.err.println("Unexpected argument in HELP command.");
+
+                                    displayHelpPage();
+                                }
+                            }
+                            if (yes) {
+                                commands.clear();
+                                break;
+                            }
+                        } catch (IllegalArgumentException e) {
+                            System.err.println("Undefined behaviour. Command flushed.");
                             commands.clear();
                             break;
                         }
-                    } catch (IllegalArgumentException e) {
-                        System.err.println("Undefined behaviour. Command flushed.");
-                        commands.clear();
-                        break;
+
+
                     }
-
-
+                } catch (IOException e) {
+                    System.err.println("error while logging");
                 }
+
             }
 
 
@@ -235,6 +299,7 @@ public class NotGrep {
             System.err.println(e.getMessage());
         }
     }
+
     private static void displayHelpPage() {
         String usage = "Usage: As is in the project without an output file\n\n" +
                 "$ notgrep [OPTIONAL FLAGS] <command_file.txt>\n" +
@@ -244,8 +309,8 @@ public class NotGrep {
                 "> search ...;\n" +
                 "> remove ...;\n" +
                 "> reset;\n" +
-                "> exit;\n" +
                 "> help;\n" +
+                "> exit;\n" +
                 "OPTIONAL FLAGS\n" +
                 "-h   displays a help page\n" +
                 "-bst changes the data structure to binary search tree (default) \n" +
@@ -281,6 +346,6 @@ public class NotGrep {
                 "  \\_____\\____/|_|  |_|_|  |_/_/    \\_\\_| \\_|_____/|_____/ \n" +
                 "                                                          \n" +
                 "                                                          \n";
-        System.out.printf("%s%s%n%s%s%n",  commandsTitle, commands, usageTitle, usage);
+        System.out.printf("%s%s%n%s%s%n", commandsTitle, commands, usageTitle, usage);
     }
 }

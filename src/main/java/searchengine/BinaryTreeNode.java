@@ -4,9 +4,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class BinaryTreeNode {
-    public BinaryTreeNode left, right;
     private final String word;
     private final Set<String> documents = new HashSet<>();
+    public BinaryTreeNode left, right;
 
     public BinaryTreeNode(String word, String document) {
         this.word = word;

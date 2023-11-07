@@ -19,7 +19,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 
-
 public class CommandParser {
     Queue<String> commands = new ArrayDeque<>();
     SearchEngine engine;
@@ -30,8 +29,10 @@ public class CommandParser {
         engine = new SearchEngine(flag);
         readCommandFile(file);
     }
+
     // for testing only
-    public CommandParser() {}
+    public CommandParser() {
+    }
 
     private void readCommandFile(File file) {
         try (var reader = Files.newBufferedReader(file.toPath())) {
@@ -112,16 +113,18 @@ public class CommandParser {
 
                     Set<String> searchResults = engine.search(args);
                     logToOutputFile(args, searchResults);
+                    System.out.println("Output file in: " + outputFile.getAbsolutePath());
                 }
             }
         }
     }
+
     private void logToOutputFile(List<String> searchArgs, Set<String> searchResults) {
         if (outputFile == null) {
             System.err.println("output file is null for some reason.");
             return;
         }
-        try(var writer = new BufferedWriter(new FileWriter(outputFile, true))) {
+        try (var writer = new BufferedWriter(new FileWriter(outputFile, true))) {
             writer.write("query: ");
             String args = String.join(", ", searchArgs);
 
@@ -136,6 +139,7 @@ public class CommandParser {
             System.err.println("error while writing to output file.");
         }
     }
+
     /*
     +---------------------------------------------------------------------------------------+
     |                                                                                       |

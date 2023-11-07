@@ -1,4 +1,5 @@
 package searchengine;
+
 public enum Command {
     LOAD,
     SEARCH,
