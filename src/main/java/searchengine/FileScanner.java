@@ -15,12 +15,8 @@ public class FileScanner {
     public FileScanner(String contents, Flag flag) {
         this.contents = contents;
         switch (flag) {
-            case BST -> {
-                words = new BinaryTree();
-            }
-            case LL -> {
-                words = new NotTree();
-            }
+            case BST -> words = new BinaryTree();
+            case LL -> words = new NotTree();
         }
     }
 
