@@ -16,7 +16,8 @@ _notgrep_ supports the following commands which are also supposed to be written 
 | load <path/to/input/file.txt> | loads the input file to system. querying will be done on this file |
 | search \<query-string> | searches the given arguments in the loaded file |
 | remove \<document-name> | removes a document from the system. the document **is not** removed from the input file |
-| clear list | clears the entries and restarts the system |
+| reset | clears the entries and restarts the system |
+| exit (only in REP) | exits the REP |
 
 The command file shall follow the following rule:\
 path/to/output/txt;\
@@ -57,10 +58,10 @@ $ notgrep
 > load ...
 > search ...
 > remove ...
-> clear list
+> reset;
+> exit; 
 ```
 OPTIONAL FLAGS\
 -h   displays a help page\
--bst changes the data structure to binary search tree\
--ll  changes the data structure to linked list\
--rb  changes the data structure to red-black tree (default)
+-bst changes the data structure to binary search tree (default) \
+-ll  changes the data structure to linked list

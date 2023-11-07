@@ -10,8 +10,10 @@ import java.util.Set;
 public class SearchEngine {
 
     EngineableStructure maybeTree;
+    Flag flag;
 
-    public SearchEngine() {
+    public SearchEngine(Flag flag) {
+        this.flag = flag;
     }
 
     public void load(String path) throws IOException {
@@ -25,7 +27,7 @@ public class SearchEngine {
                 }
                 allFiles.append(line);
             }
-            var scanner = new FileScanner(allFiles.toString());
+            var scanner = new FileScanner(allFiles.toString(), flag);
             maybeTree = scanner.scanFile();
         } catch (IOException e) {
 //            System.err.println("Error while loading the input file");

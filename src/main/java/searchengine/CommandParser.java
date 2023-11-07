@@ -19,14 +19,15 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 
+
 public class CommandParser {
     Queue<String> commands = new ArrayDeque<>();
-    SearchEngine engine = new SearchEngine();
+    SearchEngine engine;
     File outputFile;
 
-    public CommandParser(File file) {
-        // TODO accept the flag for DS here and send it to search engine
+    public CommandParser(File file, Flag flag) {
 //        System.out.println("Reading the file " + file.getAbsolutePath());
+        engine = new SearchEngine(flag);
         readCommandFile(file);
     }
     // for testing only

@@ -4,13 +4,7 @@ import java.io.File;
 import java.util.Optional;
 
 public class NotGrep {
-    private enum Flag {
-        BST,
-        LL,
-        RB,
-        HELP,
-        UNDEF
-    }
+
 
     public static void main(String[] args) {
         /* +-----------------------------+
@@ -43,15 +37,21 @@ public class NotGrep {
             System.out.println("two flags okay");
 
             // types make it a bit clear here
-            Flag flag = checkFlag(dsFlag);
-            Optional<File> fileOrNot = checkFile(pathOfFile);
+            try {
+                Flag flag = checkFlag(dsFlag);
+                Optional<File> fileOrNot = checkFile(pathOfFile);
 
-            fileOrNot.ifPresentOrElse(
-                    NotGrep::parseCommandFile,
-                    () -> {
-                        System.err.println("Invalid command file path.");
-                        System.exit(1);
-                    });
+                fileOrNot.ifPresentOrElse(
+                        file -> parseCommandFile(file, flag),
+                        () -> {
+                            System.err.println("Invalid command file path.");
+                            System.exit(1);
+                        });
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
+                System.err.println("notgrep -h for usage and available flags");
+            }
+
 
             /* ====== Author Note ======
             Here I used both Optional<T> type and lambda expressions. I know how they work (kind of)
@@ -64,17 +64,65 @@ public class NotGrep {
              */
 
         } else if (args.length == 1) {
-            var pathOfFile = args[0];
-            // I choose to not accept flags in REP so this could only be a file
-            Optional<File> fileOrNot = checkFile(pathOfFile);
-            System.out.println("one flag okay");
+            // this could be -h flag
+            if (args[0].equals("-h")) {
+                String usage = "Usage: As is in the project without an output file\n\n" +
+                        "$ notgrep [OPTIONAL FLAGS] <command_file.txt>\n" +
+                        "Usage: - REP (Read-Evaluate-Print) normally there's an L but this doesn't have loops\n\n" +
+                        "$ notgrep\n" +
+                        "> load ...\n" +
+                        "> search ...\n" +
+                        "> remove ...\n" +
+                        "> reset;\n" +
+                        "> exit;\n" +
+                        "OPTIONAL FLAGS\n" +
+                        "-h   displays a help page\n" +
+                        "-bst changes the data structure to binary search tree (default) \n" +
+                        "-ll  changes the data structure to linked list\n";
+                String commands = "notgrep supports the following commands which are also supposed to be written in a text with very specific rules. \n" +
+                        "|             Command           |                              Description                                            |\n" +
+                        "| ----------------------------- | ----------------------------------------------------------------------------------- |\n" +
+                        "| load <path/to/input/file.txt> | loads the input file to system. querying will be done on this file                  |\n" +
+                        "| search <query-string>         | searches the given arguments in the loaded file                                     |\n" +
+                        "| remove <document-name>        | removes a document from the system. the document IS NOT removed from the input file |\n" +
+                        "| reset                         | clears the entries and restarts the system                                          |\n" +
+                        "\n" +
+                        "The command file shall follow the following rule:\n" +
+                        "path/to/output/txt;\n" +
+                        "command1;\n" +
+                        "command2;\n" +
+                        "...\n";
+                String usageTitle = "  _    _  _____         _____ ______ \n" +
+                        " | |  | |/ ____|  /\\   / ____|  ____|\n" +
+                        " | |  | | (___   /  \\ | |  __| |__   \n" +
+                        " | |  | |\\___ \\ / /\\ \\| | |_ |  __|  \n" +
+                        " | |__| |____) / ____ \\ |__| | |____ \n" +
+                        "  \\____/|_____/_/    \\_\\_____|______|\n" +
+                        "                                     \n" +
+                        "                                     \n";
+                String commandsTitle = "   _____ ____  __  __ __  __          _   _ _____   _____ \n" +
+                        "  / ____/ __ \\|  \\/  |  \\/  |   /\\   | \\ | |  __ \\ / ____|\n" +
+                        " | |   | |  | | \\  / | \\  / |  /  \\  |  \\| | |  | | (___  \n" +
+                        " | |   | |  | | |\\/| | |\\/| | / /\\ \\ | . ` | |  | |\\___ \\ \n" +
+                        " | |___| |__| | |  | | |  | |/ ____ \\| |\\  | |__| |____) |\n" +
+                        "  \\_____\\____/|_|  |_|_|  |_/_/    \\_\\_| \\_|_____/|_____/ \n" +
+                        "                                                          \n" +
+                        "                                                          \n";
+                System.out.printf("%s%s%n%s%s%n",  commandsTitle, commands, usageTitle, usage);
+            } else {
+                var pathOfFile = args[0];
+                Optional<File> fileOrNot = checkFile(pathOfFile);
+                System.out.println("no flag okay");
 
-            fileOrNot.ifPresentOrElse(
-                    NotGrep::parseCommandFile,
-                    () -> {
-                        System.err.println("Invalid command file path.");
-                        System.exit(1);
-                    });
+                fileOrNot.ifPresentOrElse(
+                        file -> parseCommandFile(file, Flag.BST),
+                        () -> {
+                            System.err.println("Invalid command file path.");
+                            System.exit(1);
+                        });
+            }
+
+
 
 
         } else {
@@ -85,15 +133,11 @@ public class NotGrep {
 
     }
 
-    private static Flag checkFlag(String flag) {
-        // TODO Strategy Pattern to change data structures.
-        // TODO operate on flags instead of returning it
+    private static Flag checkFlag(String flag) throws Exception {
         return switch (flag) {
             case "-bst" -> Flag.BST;
             case "-ll" -> Flag.LL;
-            case "-rb" -> Flag.RB;
-            case "-h" -> Flag.HELP;
-            default -> Flag.UNDEF;
+            default -> throw new Exception("Unknown flag");
         };
 
     }
@@ -107,8 +151,8 @@ public class NotGrep {
         }
     }
 
-    private static void parseCommandFile(File file) {
-        var parser = new CommandParser(file);
+    private static void parseCommandFile(File file, Flag flag) {
+        var parser = new CommandParser(file, flag);
         try {
             parser.parse();
         } catch (Exception e) {

@@ -5,14 +5,23 @@ import static searchengine.FileScanner.Mode.TITLE;
 
 public class FileScanner {
     private final String contents;
-    private final EngineableStructure words = new NotTree();
+    private EngineableStructure words = null;
+    // I wanted this final but this works now. I don't like it
     private int start = 0;
     private int current = 0;
     private String currentDocument;
     private Mode mode = TITLE;
 
-    public FileScanner(String contents) {
+    public FileScanner(String contents, Flag flag) {
         this.contents = contents;
+        switch (flag) {
+            case BST -> {
+                words = new BinaryTree();
+            }
+            case LL -> {
+                words = new NotTree();
+            }
+        }
     }
 
     public EngineableStructure scanFile() {
