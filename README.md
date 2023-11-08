@@ -1,6 +1,22 @@
 # notgrep
 _notgrep_ is a command line utility that aims to provide a rudimentary search engine functionality inside a very specific file that represents a basic file system through simple commands written in a command file. 
 
+## Installation and Requirements
+**Java**\
+JDK: OpenJDK 21\
+IDE: IntelliJ IDEA Community Edition 2023.2.4\
+Build: Maven\
+Language Level: JDK default or 20. (Can be set in Project Structure in IntelliJ)\
+The code uses program arguments for different behaviour. Those can be edited in configurations.\
+I tried to do unit tests with JUnit for the first time. I just let IntelliJ handle the Maven part. There should be a sync icon floating in the pom.xml. Good luck.
+
+**Python**\
+I have python scripts for file generation and I use `pipenv`. My python version is 3.11.5.\
+*I don't know if any of this is correct but that's what I do soooooooooo*\
+`pipenv shell` spawns a shell, then `pipenv install` installs the required libraries. (Cititation needed) \
+First run wiki_scraper.py to scrape some articles. Then run fileformatter.py to format them for the Java code. \
+I am not confident in any of this because I ducktaped these in an evening and it's surprising that it worked at least once.
+
 ## Part 1: The program as it is in the project description
 That very specific file is assumed to follow the rule below:\
 \<document-name\>\
