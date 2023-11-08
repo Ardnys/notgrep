@@ -8,12 +8,12 @@ import static searchengine.FileScanner.Mode.TITLE;
 
 public class FileScanner {
     private final String contents;
+    private final Set<String> allDocs = new HashSet<>();
     private EngineableStructure words = null;
     // I wanted this final but this works now. I don't like it
     private int start = 0;
     private int current = 0;
     private String currentDocument;
-    private final Set<String> allDocs = new HashSet<>();
     private Mode mode = TITLE;
 
     public FileScanner(String contents, Flag flag) {
@@ -57,10 +57,6 @@ public class FileScanner {
         while (!isBang(peek())) advance();
 
         currentDocument = contents.substring(start, current);
-
-
-//        System.out.println("=== current doc ===: " + currentDocument);
-
     }
 
     private void word() {

@@ -38,8 +38,6 @@ public class BinaryTree implements EngineableStructure {
 
     @Override
     public Set<String> search(List<String> keywords) {
-        // this implementation is the same. what can i do about it?
-        // TODO maybe extract same implementation
         Set<String> docs = new HashSet<>();
         Set<String> excludedDocs = new HashSet<>();
         boolean onlyExclude = true;

@@ -25,11 +25,9 @@ public class CommandParser {
     File outputFile;
 
     public CommandParser(File file, Flag flag) {
-//        System.out.println("Reading the file " + file.getAbsolutePath());
         engine = new SearchEngine(flag);
         readCommandFile(file);
     }
-
 
     /*
     +---------------------------------------------------------------------------------------+
@@ -53,7 +51,6 @@ public class CommandParser {
                 if (chr == ';') {
                     // end of command
                     commands.add(command.toString().trim());
-//                    System.out.println("queue command: " + command.toString().trim());
                     command.setLength(0);
                     // set length clears the StringBuilder without additional memory allocation
                 } else {
@@ -92,7 +89,7 @@ public class CommandParser {
             }
             Command command = Command.valueOf(commandString.toUpperCase()); // this is cool
 
-            // then we can pattern match it
+            // then we can fancy switch it
             switch (command) {
                 case LOAD -> {
                     if (arguments.size() != 1) throw new Exception("Expected input path for LOAD command.\n");

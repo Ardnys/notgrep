@@ -3,6 +3,11 @@ package searchengine;
 import java.io.IOException;
 import java.io.OutputStream;
 
+/*
+THIS IS EXPERIMENTAL ONLY. MAY BREAK SOME STUFF IDK
+basically writes to both stdout and a file when you System.out.print
+ */
+
 public class DualOutputStream extends OutputStream {
 
     private final OutputStream standard;

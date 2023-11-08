@@ -12,7 +12,6 @@ public class NotTree implements EngineableStructure {
     public NotTree() {
     }
 
-
     public void append(String word, String document) {
         if (root == null) {
             root = new NotTreeNode(word, document);
@@ -104,7 +103,6 @@ public class NotTree implements EngineableStructure {
     public void remove(String document) {
         var current = root;
         while (current != null) {
-            // TODO maybe add node deletion for one document
             current.getDocuments().remove(document);
             allDocs.remove(document);
             current = current.next;
@@ -131,17 +129,6 @@ public class NotTree implements EngineableStructure {
         }
         root = null;
     }
-
-    public void printList() {
-        var current = root;
-        System.out.print("head->");
-        while (current != null) {
-            System.out.printf("%s->", current.getWord());
-            current = current.next;
-        }
-        System.out.print("end");
-    }
-
     @Override
     public String toString() {
         var sb = new StringBuilder();

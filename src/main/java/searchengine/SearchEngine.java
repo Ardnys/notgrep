@@ -29,14 +29,12 @@ public class SearchEngine {
             var scanner = new FileScanner(allFiles.toString(), flag);
             maybeTree = scanner.scanFile();
         } catch (IOException e) {
-//            System.err.println("Error while loading the input file");
             throw new IOException("Invalid input path.");
         }
     }
 
     public Set<String> search(List<String> keywords) throws Exception {
         if (maybeTree == null) {
-//            System.err.println("Word list has not been initialized");
             throw new Exception("Word list has not been initialized.");
         }
         return maybeTree.search(keywords);

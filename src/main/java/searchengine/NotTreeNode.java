@@ -9,7 +9,6 @@ public class NotTreeNode {
     private final Set<String> documents = new HashSet<>();
     public NotTreeNode next;
 
-
     public NotTreeNode(String word, String document) {
         this.word = word;
         this.addDocument(document);
@@ -17,10 +16,6 @@ public class NotTreeNode {
 
     public void addDocument(String document) {
         documents.add(document);
-    }
-
-    public void printDocuments() {
-        documents.forEach(System.out::println);
     }
 
     @Override
