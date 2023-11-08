@@ -33,7 +33,8 @@ _notgrep_ supports the following commands which are also supposed to be written 
 | search \<query-string> | searches the given arguments in the loaded file |
 | remove \<document-name> | removes a document from the system. the document **is not** removed from the input file |
 | reset | clears the entries and restarts the system |
-| exit (only in REP) | exits the REP |
+| exit (REP only) | exits the REP |
+| help (REP only) | displays help page |
 
 The command file shall follow the following rule:\
 path/to/output/txt;\
