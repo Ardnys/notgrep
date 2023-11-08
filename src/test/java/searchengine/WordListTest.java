@@ -34,14 +34,22 @@ class WordListTest {
         setupListToTest();
         assertEquals("head->comma->computer->information->science->software->vision->end", list.toString());
     }
+
     @Test
     void searchOneKeywordInOneDoc() {
         setupListToTest();
         assertEquals(Set.of("tech"), list.search(List.of("computer")));
-    }@Test
-    void searchOneExcludedKeywordInOneDoc() {
+    }
+
+    @Test
+    void searchOneExcludedKeyword() {
         setupListToTest();
         assertEquals(Set.of("tech"), list.search(List.of("!comma")));
+    }
+    @Test
+    void searchTwoExcludedKeywords() {
+        setupListToTest();
+        assertEquals(Set.of("tech"), list.search(List.of("!comma", "!vision")));
     }
 
     @Test
@@ -74,11 +82,13 @@ class WordListTest {
         setupListToTest();
         assertEquals(Set.of("tech"), list.search(List.of("science", "!comma")));
     }
+
     @Test
     void unsearchDocumentsWordAppearsInBoth() {
         setupListToTest();
         assertEquals(Set.of("tech"), list.search(List.of("science", "information")));
     }
+
     @Test
     void searchThatAppearsAndDoesNot() {
         NotTree list = new NotTree();
@@ -92,6 +102,7 @@ class WordListTest {
         list.append("potato", "food");
         assertEquals(Set.of("tech"), list.search(List.of("science", "!potato", "software")));
     }
+
     @Test
     void clearListNullRoot() {
         setupListToTest();

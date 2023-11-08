@@ -30,8 +30,19 @@ public class CommandParser {
         readCommandFile(file);
     }
 
-    // for testing only
-    public CommandParser() {
+
+    /*
+    +---------------------------------------------------------------------------------------+
+    |                                                                                       |
+    |                ! ! ! !  T E S T   M E T H O D ! ! !                                   |
+    |                                       B E   C A R E F U L                             |
+    |                               N O T    I N T E N D E D   F O R   U S E                |
+    |                                                                                       |
+    +----------------------------------------------------------------------------------------
+     */
+    // FOR TEST ONLY
+    public CommandParser(Flag flag) {
+        engine = new SearchEngine(flag);
     }
 
     private void readCommandFile(File file) {
@@ -140,15 +151,6 @@ public class CommandParser {
         }
     }
 
-    /*
-    +---------------------------------------------------------------------------------------+
-    |                                                                                       |
-    |                ! ! ! !  T E S T   M E T H O D ! ! !                                   |
-    |                                       B E   C A R E F U L                             |
-    |                               N O T    I N T E N D E D   F O R   U S E                |
-    |                                                                                       |
-    +----------------------------------------------------------------------------------------
-     */
     public String testCommands(Queue<String> commands) throws Exception {
         Set<String> searchResults = new HashSet<>();
         while (!commands.isEmpty()) {

@@ -13,7 +13,7 @@ public class FileScanner {
     private int start = 0;
     private int current = 0;
     private String currentDocument;
-    private Set<String> allDocs = new HashSet<>();
+    private final Set<String> allDocs = new HashSet<>();
     private Mode mode = TITLE;
 
     public FileScanner(String contents, Flag flag) {

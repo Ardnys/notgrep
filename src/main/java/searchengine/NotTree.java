@@ -13,7 +13,6 @@ public class NotTree implements EngineableStructure {
     }
 
 
-
     public void append(String word, String document) {
         if (root == null) {
             root = new NotTreeNode(word, document);

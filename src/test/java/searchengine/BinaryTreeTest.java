@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class BinaryTreeTest {
     BinaryTree tree;
@@ -13,6 +13,7 @@ class BinaryTreeTest {
     void setupTree() {
         if (tree == null) {
             tree = new BinaryTree();
+            tree.setAllDocs(Set.of("cs", "lang"));
             tree.append("science", "cs");
             tree.append("computer", "cs");
             tree.append("software", "cs");
@@ -35,6 +36,19 @@ class BinaryTreeTest {
         setupTree();
         assertEquals(Set.of("cs"), tree.search(List.of("science")));
     }
+
+    @Test
+    void unsearchOneWord() {
+        setupTree();
+        assertEquals(Set.of("lang"), tree.search(List.of("!science")));
+    }
+
+    @Test
+    void unsearchTwoWords() {
+        setupTree();
+        assertEquals(Set.of("lang"), tree.search(List.of("!science", "!computer")));
+    }
+
     @Test
     void searchTwoWord() {
         setupTree();
@@ -46,14 +60,16 @@ class BinaryTreeTest {
         setupTree();
         assertEquals(Set.of("cs", "lang"), tree.search(List.of("information")));
     }
+
     @Test
     void searchWordsInNoFiles() {
         setupTree();
         assertEquals(Set.of(), tree.search(List.of("heyvsaucemichaelhere")));
     }
+
     @Test
     void searchOneExcludeOne() {
         setupTree();
-        assertEquals(Set.of("cs"), tree.search(List.of("science", "!")));
+        assertEquals(Set.of("cs"), tree.search(List.of("science", "!comma")));
     }
 }
