@@ -2,6 +2,7 @@ package searchengine;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -14,6 +15,10 @@ class WordListTest {
     void setupListToTest() {
         if (list == null) {
             list = new NotTree();
+            Set<String> docs = new HashSet<>();
+            docs.add("tech");
+            docs.add("language");
+            list.setAllDocs(docs);
             list.append("science", "tech");
             list.append("computer", "tech");
             list.append("software", "tech");
@@ -33,6 +38,10 @@ class WordListTest {
     void searchOneKeywordInOneDoc() {
         setupListToTest();
         assertEquals(Set.of("tech"), list.search(List.of("computer")));
+    }@Test
+    void searchOneExcludedKeywordInOneDoc() {
+        setupListToTest();
+        assertEquals(Set.of("tech"), list.search(List.of("!comma")));
     }
 
     @Test

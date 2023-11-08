@@ -125,7 +125,7 @@ public class NotGrep {
 
             var scanner = new Scanner(System.in);
             Queue<String> commands = new ArrayDeque<>();
-            SearchEngine engine = new SearchEngine(Flag.BST);
+            SearchEngine engine = new SearchEngine(Flag.LL);
 
             while (true) {
                 System.out.print("> ");

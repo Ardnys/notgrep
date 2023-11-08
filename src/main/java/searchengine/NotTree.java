@@ -7,9 +7,12 @@ import java.util.Set;
 
 public class NotTree implements EngineableStructure {
     public NotTreeNode root;
+    private Set<String> allDocs;
 
     public NotTree() {
     }
+
+
 
     public void append(String word, String document) {
         if (root == null) {
@@ -58,6 +61,7 @@ public class NotTree implements EngineableStructure {
     public Set<String> search(List<String> keywords) {
         Set<String> docs = new HashSet<>();
         Set<String> excludedDocs = new HashSet<>();
+        boolean onlyExclude = true;
 
         for (int i = 0; i < keywords.size(); i++) {
             var word = keywords.get(i);
@@ -67,12 +71,18 @@ public class NotTree implements EngineableStructure {
                 excludedDocs.addAll(keywordDocs);
                 continue;
             }
+            onlyExclude = false;
             Set<String> keywordDocs = search(word.trim());
             if (i == 0) {
                 docs.addAll(keywordDocs);
                 continue;
             }
             docs.retainAll(keywordDocs);
+        }
+        if (onlyExclude) {
+            Set<String> res = new HashSet<>(allDocs);
+            res.removeAll(excludedDocs);
+            return res;
         }
         docs.removeAll(excludedDocs);
 
@@ -97,6 +107,7 @@ public class NotTree implements EngineableStructure {
         while (current != null) {
             // TODO maybe add node deletion for one document
             current.getDocuments().remove(document);
+            allDocs.remove(document);
             current = current.next;
         }
     }
@@ -104,6 +115,11 @@ public class NotTree implements EngineableStructure {
     @Override
     public void reset() {
         clearList();
+    }
+
+    @Override
+    public void setAllDocs(Set<String> docs) {
+        this.allDocs = docs;
     }
 
     private void clearList() {

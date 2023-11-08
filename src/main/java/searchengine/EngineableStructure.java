@@ -12,4 +12,5 @@ public interface EngineableStructure {
     void remove(String document);
 
     void reset();
+    void setAllDocs(Set<String> docs);
 }

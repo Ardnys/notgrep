@@ -9,6 +9,8 @@ import java.util.Set;
 public class BinaryTree implements EngineableStructure {
     public BinaryTreeNode root = null;
 
+    private Set<String> allDocs;
+
     public BinaryTree() {
     }
 
@@ -40,6 +42,7 @@ public class BinaryTree implements EngineableStructure {
         // TODO maybe extract same implementation
         Set<String> docs = new HashSet<>();
         Set<String> excludedDocs = new HashSet<>();
+        boolean onlyExclude = true;
 
         for (int i = 0; i < keywords.size(); i++) {
             String word = keywords.get(i);
@@ -48,12 +51,18 @@ public class BinaryTree implements EngineableStructure {
                 excludedDocs.addAll(keywordDocs);
                 continue;
             }
+            onlyExclude = false;
             Set<String> keywordDocs = search(root, word.trim());
             if (i == 0) {
                 docs.addAll(keywordDocs);
                 continue;
             }
             docs.retainAll(keywordDocs);
+        }
+        if (onlyExclude) {
+            Set<String> res = new HashSet<>(allDocs);
+            res.removeAll(excludedDocs);
+            return res;
         }
         docs.removeAll(excludedDocs);
         return docs;
@@ -79,6 +88,7 @@ public class BinaryTree implements EngineableStructure {
     private void remove(BinaryTreeNode node, String document) {
         if (node == null) return;
         node.getDocuments().remove(document);
+        allDocs.remove(document);
         remove(node.left, document);
         remove(node.right, document);
     }
@@ -87,6 +97,11 @@ public class BinaryTree implements EngineableStructure {
     public void reset() {
         root = null;
         // chop chop GC, work is waiting
+    }
+
+    @Override
+    public void setAllDocs(Set<String> docs) {
+        this.allDocs = docs;
     }
 
     @Override

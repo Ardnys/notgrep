@@ -1,5 +1,8 @@
 package searchengine;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import static searchengine.FileScanner.Mode.BODY;
 import static searchengine.FileScanner.Mode.TITLE;
 
@@ -10,6 +13,7 @@ public class FileScanner {
     private int start = 0;
     private int current = 0;
     private String currentDocument;
+    private Set<String> allDocs = new HashSet<>();
     private Mode mode = TITLE;
 
     public FileScanner(String contents, Flag flag) {
@@ -25,6 +29,7 @@ public class FileScanner {
             start = current;
             scan();
         }
+        words.setAllDocs(allDocs);
         return words;
     }
 
@@ -52,6 +57,8 @@ public class FileScanner {
         while (!isBang(peek())) advance();
 
         currentDocument = contents.substring(start, current);
+
+
 //        System.out.println("=== current doc ===: " + currentDocument);
 
     }
@@ -64,6 +71,7 @@ public class FileScanner {
                 .toLowerCase();
 //        System.out.println("word: " + word);
         words.append(word, currentDocument);
+        allDocs.add(currentDocument);
     }
 
     private void separator() {
